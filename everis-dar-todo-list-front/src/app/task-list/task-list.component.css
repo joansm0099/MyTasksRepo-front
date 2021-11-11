@@ -1,0 +1,25 @@
+.new-button {
+	float: right;
+}
+.task-card {
+	background-color: #ebebeb;
+	margin: 10px 0px;
+}
+.task-card-table {
+	width: 100%;
+}
+.task-id {
+	margin-block-start: 0.5em;
+}
+.status-column {
+	width: 200px;
+}
+.description-column {
+	padding-left: 20px;
+	vertical-align: top;
+}
+.buttons-column {
+	padding-left: 20px;
+	width: 40px;
+	
+}
