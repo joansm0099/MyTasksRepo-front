@@ -2,20 +2,20 @@
 <div [ngClass]="['task-form']">
 	<mat-form-field appearance="fill" [ngClass]="['large']">
 		<mat-label>Title</mat-label>
-		<input matInput>
+		<input matInput #taskTitle>
 	</mat-form-field>
 	<mat-form-field appearance="fill" [ngClass]="['large']">
 		<mat-label>Description</mat-label>
-		<textarea matInput rows="4"></textarea>
+		<textarea matInput rows="4" #taskDescr></textarea>
 	</mat-form-field>
 	<mat-form-field appearance="fill">
 		<mat-label>Status</mat-label>
-		<mat-select>
+		<mat-select #taskStat>
 			<mat-option *ngFor="let st of taskStatus" [value]="st.value">{{st.name}}</mat-option>
 		</mat-select>
 	</mat-form-field>
 	<div [ngClass]="['buttons']">
 		<button mat-raised-button (click)="goBack()">Cancel</button>
-		<button mat-raised-button color="primary" [ngClass]="['save-button']" (click)="saveTask()">Save</button>
+		<button mat-raised-button color="primary" [ngClass]="['save-button']" (click)="saveTask(taskTitle.value, taskDescr.value, taskStat.value)">Save</button>
 	</div>
 </div>

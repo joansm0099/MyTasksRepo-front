@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { TaskService, Task } from '../task.service';
 
 @Component({
   selector: 'app-new-task',
@@ -15,7 +16,9 @@ export class NewTaskComponent implements OnInit {
     {name: 'Completed', value: 'COMPLETED'}
   ];
 
-  constructor(private location: Location) { }
+  constructor(
+    private location: Location,
+    private taskService: TaskService) { }
 
   ngOnInit() {
   }
@@ -24,9 +27,21 @@ export class NewTaskComponent implements OnInit {
     this.location.back();
   }
 
-  saveTask(): void {
-    alert('backend not implemented yet :-(');
-    this.goBack();
+  saveTask(title: string, description: string, status: string): void {
+    title = title.trim();
+    description = description.trim();
+    if (!title || !description || !status) {
+      alert('Please, fill all the properties of the task.');
+      return;
+    }
+    this.taskService.addTask({
+      title: title,
+      description: description,
+      status: status
+    } as Task)
+      .subscribe(task => {
+        this.goBack();
+      });
   }
 
 }

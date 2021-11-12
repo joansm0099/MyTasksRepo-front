@@ -1,9 +1,9 @@
 <h2>Tasks list</h2>
 <mat-button-toggle-group name="statusFilter" aria-label="Filter by status" value="all">
-	<mat-button-toggle value="all" (click)="filterTasks('all')">All</mat-button-toggle>
-	<mat-button-toggle value="pending" (click)="filterTasks('PENDING')">Pending</mat-button-toggle>
-	<mat-button-toggle value="in_progress" (click)="filterTasks('IN_PROGRESS')">In progress</mat-button-toggle>
-	<mat-button-toggle value="completed" (click)="filterTasks('COMPLETED')">Completed</mat-button-toggle>
+	<mat-button-toggle value="all" (click)="getTasksByStatus('all')">All</mat-button-toggle>
+	<mat-button-toggle value="pending" (click)="getTasksByStatus('PENDING')">Pending</mat-button-toggle>
+	<mat-button-toggle value="in_progress" (click)="getTasksByStatus('IN_PROGRESS')">In progress</mat-button-toggle>
+	<mat-button-toggle value="completed" (click)="getTasksByStatus('COMPLETED')">Completed</mat-button-toggle>
 </mat-button-toggle-group>
 <button mat-raised-button color="primary" [ngClass]="['new-button']" routerLink="/newTask">New task</button>
 
@@ -15,7 +15,7 @@
 				<mat-form-field appearance="fill">
   					<mat-label>Status</mat-label>
   					<mat-select [(value)]="task.status">
-    					<mat-option *ngFor="let st of taskStatus" [value]="st.value">
+    					<mat-option *ngFor="let st of taskStatus" [value]="st.value" (click)="update(task, st.value)">
       						{{st.name}}
     					</mat-option>
   					</mat-select>
@@ -26,7 +26,7 @@
 				<p>{{task.description}}</p>
 			</td>
 			<td [ngClass]="['buttons-column']">
-				<button mat-icon-button color="primary" aria-label="Delete">
+				<button mat-icon-button color="primary" aria-label="Delete" (click)="delete(task.id)">
 					<mat-icon>delete</mat-icon>
 				</button>
 			</td>

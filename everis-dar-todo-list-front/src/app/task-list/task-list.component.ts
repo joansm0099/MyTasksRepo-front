@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TaskService, Task } from '../task.service';
 
 @Component({
   selector: 'app-task-list',
@@ -7,49 +8,45 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskListComponent implements OnInit {
 
-  task1 = {
-    id: 1,
-    title: 'Test 1',
-    description: 'Create components',
-    status: 'COMPLETED'
-  };
-  task2 = {
-    id: 2,
-    title: 'Test 2',
-    description: 'Configure routing',
-    status: 'IN_PROGRESS'
-  };
-  task3 = {
-    id: 3,
-    title: 'Test 3',
-    description: 'Get data from backend',
-    status: 'PENDING'
-  };
-  tasks = [this.task1, this.task2, this.task3];
+  tasks: Task[] = [];
   taskStatus = [
     {name: 'Pending', value: 'PENDING'},
     {name: 'In progress', value: 'IN_PROGRESS'},
     {name: 'Completed', value: 'COMPLETED'}
   ];
 
-  constructor() { }
+  currentFilter = 'all';
+
+  constructor(private taskService: TaskService) { }
 
   ngOnInit() {
+    this.getTasks();
   }
 
-  filterTasks(status: string) {
+  getTasks(): void {
+    this.taskService.getTasks()
+      .subscribe(tasks => this.tasks = tasks);
+  }
+
+  getTasksByStatus(status: string) {
+    this.currentFilter = status;
     if (status === 'all') {
-      this.tasks = [this.task1, this.task2, this.task3];
+      this.getTasks();
     } else {
-      // get mock data
-      if (status === 'PENDING') {
-        this.tasks = [this.task1];
-      } else if (status === 'IN_PROGRESS') {
-        this.tasks = [this.task2];
-      } else if (status === 'COMPLETED') {
-        this.tasks = [this.task3];
-      }
+      this.taskService.getTasksByStatus(status)
+        .subscribe(tasks => this.tasks = tasks);
     }
+  }
+
+  update(task: Task, statusValue: string): void {
+    task.status = statusValue;
+    this.taskService.updateTask(task)
+      .subscribe(() => this.getTasksByStatus(this.currentFilter));
+  }
+
+  delete(taskId: number): void {
+    this.tasks = this.tasks.filter(t => t.id !== taskId);
+    this.taskService.deleteTask(taskId).subscribe();
   }
 
 }
